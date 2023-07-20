@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, notification, Row, Col, Typography } from 'antd';
 import { useParams } from 'react-router-dom';
 import { resetPassword } from "../services/userService";
+import PasswordCriteriaAlert from "../components/PasswordCriteriaAlert"
 
 const { Title } = Typography;
 
@@ -30,7 +31,7 @@ const ResetPassword = () => {
   <Col span={24}>
       <Title>Reset Password</Title>
   </Col>
-  <Col xs={24} sm={14} md={10} xxl={6}>
+  <Col span={12}>
     <Form
       form={form}
       onFinish={handleSubmit}
@@ -56,7 +57,13 @@ const ResetPassword = () => {
       <Form.Item
         label="New Password"
         name="newPassword"
-        rules={[ {required: true, message: 'Please enter your new password!' }]}
+        rules={[
+          { required: true, message: 'Please enter your new password!' },
+          { 
+            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{6,}$/,
+            message: "Password does not meet the criteria!" 
+          }
+        ]}
       >
         <Input.Password />
       </Form.Item>
@@ -83,6 +90,9 @@ const ResetPassword = () => {
         </Button>
       </Form.Item>
     </Form>
+  </Col>
+  <Col span={12}>
+    <PasswordCriteriaAlert />
   </Col>
   </Row>
 };

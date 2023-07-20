@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Row, Col, Button, Typography, notification, Input } from "antd"
 import { createUser } from "../services/userService";
+import PasswordCriteriaAlert from "../components/PasswordCriteriaAlert"
 
 const { Title } = Typography;
 
@@ -29,7 +30,7 @@ const Register = () => {
         <Col span={24}>
             <Title>Register New User</Title>
         </Col>
-        <Col xs={24} sm={14} md={10} xxl={6}>
+        <Col span={12}>
             <Form
                 form={form}
                 onFinish={handleSubmit}
@@ -54,7 +55,13 @@ const Register = () => {
                 <Form.Item
                     label="Password"
                     name="password"
-                    rules={[{required: true, message: 'Please enter your password!' }]}>
+                    rules={[
+                        { required: true, message: 'Please enter your password!' },
+                        { 
+                            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{6,}$/,
+                            message: "Password does not meet the criteria!" 
+                        }
+                    ]}>
                     <Input.Password />
                 </Form.Item>
                 <Form.Item
@@ -80,6 +87,9 @@ const Register = () => {
                 </Button>
                 </Form.Item>
             </Form>
+        </Col>
+        <Col span={12}>
+            <PasswordCriteriaAlert />
         </Col>
     </Row>
 }

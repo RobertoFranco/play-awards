@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, notification } from 'antd';
 import { login } from '../services/userService';
 import UserContext from './context/UserContext';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const userContext = useContext(UserContext);
@@ -16,7 +17,7 @@ const LoginForm = () => {
         const { data } = await login(email, password);
         userContext.setUserToken(data.token);
         form.resetFields();
-        window.location = "/register";
+        navigate("/register");
     } catch(error) {
         if(error.response && error.response.status === 401)
           notification.warning({ message: "Login", description: "Invalid login credentials" })
